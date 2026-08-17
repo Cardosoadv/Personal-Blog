@@ -1,0 +1,17 @@
+{
+  "name": "personal-blog-server",
+  "version": "1.0.0",
+  "description": "Express + SQLite API for a personal blog with images, comments and hashtags",
+  "main": "src/index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.3.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.0",
+    "multer": "^2.0.0"
+  }
+}
