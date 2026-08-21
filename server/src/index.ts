@@ -1,10 +1,9 @@
-const express = require('express');
-const cors = require('cors');
-const path = require('path');
+import express, { Request, Response, NextFunction } from 'express';
+import cors from 'cors';
 
-const { uploadsDir } = require('./middleware/upload');
-const postsRouter = require('./routes/posts');
-const hashtagsRouter = require('./routes/hashtags');
+import { uploadsDir } from './middleware/upload';
+import postsRouter from './routes/posts';
+import hashtagsRouter from './routes/hashtags';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -16,9 +15,9 @@ app.use('/uploads', express.static(uploadsDir));
 app.use('/api/posts', postsRouter);
 app.use('/api/hashtags', hashtagsRouter);
 
-app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
+app.get('/api/health', (req: Request, res: Response) => res.json({ status: 'ok' }));
 
-app.use((err, req, res, next) => {
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   if (err) {
     return res.status(400).json({ error: err.message || 'Erro inesperado' });
   }

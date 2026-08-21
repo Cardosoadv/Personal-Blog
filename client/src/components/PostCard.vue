@@ -1,16 +1,17 @@
-<script setup>
+<script setup lang="ts">
 import HashtagText from './HashtagText.vue'
+import type { Post } from '../api'
 
-const props = defineProps({
-  post: { type: Object, required: true },
-})
+defineProps<{
+  post: Post
+}>()
 
-function excerpt(text, max = 220) {
+function excerpt(text: string, max = 220) {
   if (text.length <= max) return text
   return text.slice(0, max).trimEnd() + '…'
 }
 
-function formatDate(iso) {
+function formatDate(iso: string) {
   return new Date(iso.replace(' ', 'T') + 'Z').toLocaleDateString('pt-BR', {
     day: '2-digit',
     month: 'short',

@@ -1,21 +1,26 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue'
 
-const props = defineProps({
-  text: { type: String, required: true },
-})
+const props = defineProps<{
+  text: string
+}>()
 
 const HASHTAG_RE = /#([\p{L}0-9_]+)/gu
 
-const parts = computed(() => {
-  const result = []
+interface TextPart {
+  type: 'text' | 'hashtag'
+  value: string
+}
+
+const parts = computed<TextPart[]>(() => {
+  const result: TextPart[] = []
   let lastIndex = 0
   for (const match of props.text.matchAll(HASHTAG_RE)) {
-    if (match.index > lastIndex) {
+    if (match.index! > lastIndex) {
       result.push({ type: 'text', value: props.text.slice(lastIndex, match.index) })
     }
     result.push({ type: 'hashtag', value: match[1] })
-    lastIndex = match.index + match[0].length
+    lastIndex = match.index! + match[0].length
   }
   if (lastIndex < props.text.length) {
     result.push({ type: 'text', value: props.text.slice(lastIndex) })

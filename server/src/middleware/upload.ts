@@ -1,7 +1,7 @@
-const path = require('path');
-const fs = require('fs');
-const crypto = require('crypto');
-const multer = require('multer');
+import path from 'path';
+import fs from 'fs';
+import crypto from 'crypto';
+import multer from 'multer';
 
 const uploadsDir = path.join(__dirname, '..', '..', 'uploads');
 if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
@@ -27,4 +27,4 @@ const upload = multer({
   },
 });
 
-module.exports = { upload, uploadsDir };
+export { upload, uploadsDir };

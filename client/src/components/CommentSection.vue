@@ -1,12 +1,12 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { fetchComments, createComment } from '../api'
+import { fetchComments, createComment, type Comment } from '../api'
 
-const props = defineProps({
-  postId: { type: [String, Number], required: true },
-})
+const props = defineProps<{
+  postId: string | number
+}>()
 
-const comments = ref([])
+const comments = ref<Comment[]>([])
 const loading = ref(true)
 const author = ref('')
 const content = ref('')
@@ -36,14 +36,14 @@ async function submit() {
     })
     comments.value.push(comment)
     content.value = ''
-  } catch (e) {
+  } catch (e: any) {
     error.value = e.response?.data?.error || 'Não foi possível enviar o comentário.'
   } finally {
     submitting.value = false
   }
 }
 
-function formatDate(iso) {
+function formatDate(iso: string) {
   return new Date(iso.replace(' ', 'T') + 'Z').toLocaleString('pt-BR')
 }
 

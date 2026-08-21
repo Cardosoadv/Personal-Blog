@@ -1,10 +1,15 @@
-const express = require('express');
-const db = require('../db');
+import { Router, Request, Response } from 'express';
+import db from '../db';
 
-const router = express.Router();
+const router = Router();
+
+interface HashtagCount {
+  name: string;
+  count: number;
+}
 
 // GET /api/hashtags -> [{ name, count }]
-router.get('/', (req, res) => {
+router.get('/', (req: Request, res: Response) => {
   const rows = db
     .prepare(
       `SELECT h.name AS name, COUNT(ph.post_id) AS count
@@ -13,8 +18,8 @@ router.get('/', (req, res) => {
        GROUP BY h.id
        ORDER BY count DESC, h.name ASC`
     )
-    .all();
+    .all() as HashtagCount[];
   res.json(rows);
 });
 
-module.exports = router;
+export default router;

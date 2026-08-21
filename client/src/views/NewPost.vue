@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { createPost } from '../api'
@@ -7,22 +7,22 @@ const router = useRouter()
 
 const title = ref('')
 const content = ref('')
-const imageFile = ref(null)
+const imageFile = ref<File | null>(null)
 const imagePreview = ref('')
 const submitting = ref(false)
 const error = ref('')
 
 const detectedHashtags = computed(() => {
   const text = `${title.value} ${content.value}`
-  const found = new Set()
+  const found = new Set<string>()
   for (const match of text.matchAll(/#([\p{L}0-9_]+)/gu)) {
     found.add(match[1].toLowerCase())
   }
   return [...found]
 })
 
-function onFileChange(e) {
-  const file = e.target.files[0]
+function onFileChange(e: Event) {
+  const file = (e.target as HTMLInputElement).files?.[0]
   imageFile.value = file || null
   if (imagePreview.value) URL.revokeObjectURL(imagePreview.value)
   imagePreview.value = file ? URL.createObjectURL(file) : ''
@@ -42,7 +42,7 @@ async function submit() {
       image: imageFile.value,
     })
     router.push(`/posts/${post.id}`)
-  } catch (e) {
+  } catch (e: any) {
     error.value = e.response?.data?.error || 'Não foi possível publicar a postagem.'
   } finally {
     submitting.value = false

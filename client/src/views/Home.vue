@@ -1,26 +1,26 @@
-<script setup>
+<script setup lang="ts">
 import { ref, watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { fetchPosts, fetchHashtags } from '../api'
+import { fetchPosts, fetchHashtags, type Post, type HashtagCount } from '../api'
 import PostCard from '../components/PostCard.vue'
 
 const route = useRoute()
 const router = useRouter()
 
-const posts = ref([])
-const hashtags = ref([])
+const posts = ref<Post[]>([])
+const hashtags = ref<HashtagCount[]>([])
 const loading = ref(true)
 const errorMsg = ref('')
-const searchTerm = ref(route.query.search || '')
+const searchTerm = ref((route.query.search as string) || '')
 
-const activeHashtag = () => route.query.hashtag || ''
+const activeHashtag = () => (route.query.hashtag as string) || ''
 
 async function load() {
   loading.value = true
   errorMsg.value = ''
   try {
     const [postsData, hashtagsData] = await Promise.all([
-      fetchPosts({ hashtag: route.query.hashtag, search: route.query.search }),
+      fetchPosts({ hashtag: route.query.hashtag as string, search: route.query.search as string }),
       fetchHashtags(),
     ])
     posts.value = postsData

@@ -1,21 +1,21 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { fetchPost, deletePost } from '../api'
+import { fetchPost, deletePost, type Post } from '../api'
 import HashtagText from '../components/HashtagText.vue'
 import CommentSection from '../components/CommentSection.vue'
 
-const props = defineProps({
-  id: { type: [String, Number], required: true },
-})
+const props = defineProps<{
+  id: string | number
+}>()
 
 const router = useRouter()
-const post = ref(null)
+const post = ref<Post | null>(null)
 const loading = ref(true)
 const notFound = ref(false)
 const deleting = ref(false)
 
-function formatDate(iso) {
+function formatDate(iso: string) {
   return new Date(iso.replace(' ', 'T') + 'Z').toLocaleString('pt-BR')
 }
 
@@ -24,7 +24,7 @@ async function load() {
   notFound.value = false
   try {
     post.value = await fetchPost(props.id)
-  } catch (e) {
+  } catch (e: any) {
     if (e.response?.status === 404) notFound.value = true
   } finally {
     loading.value = false

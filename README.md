@@ -20,7 +20,25 @@ client/   SPA em Vue 3 + Vite
 
 ## Como rodar
 
-### 1. Backend (porta 3000)
+### Modo Rápido (Raiz do Projeto)
+
+Instale as dependências e rode ambos (backend e frontend) simultaneamente:
+
+```bash
+npm install          # instala dependências da raiz (concurrently)
+npm run setup        # instala dependências de server/ e client/
+npm run dev          # inicia server (porta 3000) e client (porta 5173) juntos
+```
+
+Você também pode rodar separadamente da raiz:
+- `npm run dev:server` ou `npm run server`
+- `npm run dev:client` ou `npm run client`
+
+---
+
+### Execução Individual por Pasta
+
+#### 1. Backend (porta 3000)
 
 ```bash
 cd server
